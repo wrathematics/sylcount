@@ -1,0 +1,3 @@
+# sylcount
+
+Simple syllable counter.
