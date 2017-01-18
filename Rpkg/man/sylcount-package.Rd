@@ -3,7 +3,7 @@
 \docType{package}
 \name{sylcount-package}
 \alias{sylcount-package}
-\title{sylcount: TODO}
+\title{sylcount: Syllable Counting and Readability Measurements}
 \description{
 TODO
 }

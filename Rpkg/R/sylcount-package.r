@@ -1,8 +1,8 @@
-#' sylcount: TODO
+#' sylcount: Syllable Counting and Readability Measurements
 #' 
 #' TODO
 #' 
-#' @useDynLib sylcount R_readability
+#' @useDynLib sylcount R_readability R_sylcount
 #' 
 #' @name sylcount-package
 #' @docType package

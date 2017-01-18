@@ -1,6 +1,6 @@
 Package: sylcount
 Type: Package
-Title: Syllable Counter
+Title: Syllable Counting and Readability Measurements
 Version: 0.1-0
 Description: TODO
 License: BSD 2-clause License + file LICENSE
