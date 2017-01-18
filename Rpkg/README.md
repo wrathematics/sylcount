@@ -24,9 +24,9 @@ The development version is maintained on GitHub, and can easily be installed by 
 
 ```r
 ### Pick your preference
-devtools::install_github("wrathematics/Rpkg/sylcount")
-ghit::install_github("wrathematics/Rpkg/sylcount")
-remotes::install_github("wrathematics/Rpkg/sylcount")
+devtools::install_github("wrathematics/sylcount", subdir="Rpkg")
+ghit::install_github("wrathematics/sylcount", subdir="Rpkg")
+remotes::install_github("wrathematics/sylcount", subdir="Rpkg")
 ```
 
 
