@@ -2,7 +2,7 @@ Package: sylcount
 Type: Package
 Title: Syllable Counting and Readability Measurements
 Version: 0.1-0
-Description: TODO
+Description: A simple syllable counter, plus readability score measure-er.
 License: BSD 2-clause License + file LICENSE
 Depends:
     R (>= 3.0.0)
@@ -13,6 +13,6 @@ ByteCompile: yes
 Authors@R: c(person("Drew", "Schmidt", role=c("aut", "cre"), 
     email="wrathematics@gmail.com"))
 Maintainer: Drew Schmidt <wrathematics@gmail.com>
-URL: https://github.com/wrathematics/syllcount
-BugReports: https://github.com/wrathematics/syllcount/issues
+URL: https://github.com/wrathematics/sylcount
+BugReports: https://github.com/wrathematics/sylcount/issues
 RoxygenNote: 5.0.1
