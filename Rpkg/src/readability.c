@@ -4,17 +4,37 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "R_sylcount.h"
+#include "RNACI.h"
+#include "safeomp.h"
 #include "hashtable/sylcount.h"
 
 #define BUFLEN 64
+#define ITER_PER_CHECK 256
+
+#define CHARPT(x,i) ((char*)CHAR(STRING_ELT(x,i)))
+#define THROW_MEMERR() error("unable to allocate memory")
+#define CHECKMALLOC(s) if (s == NULL) THROW_MEMERR()
+
+
+// #include <R_ext/Utils.h>
+// static inline void check_interrupt_fun(void *ignored)
+// {
+//   R_CheckUserInterrupt();
+// }
+// 
+// static bool check_interrupt()
+// {
+//   return (R_ToplevelExec(check_interrupt_fun, NULL) == FALSE);
+// }
+
+
 
 static inline bool is_sentend(const char c)
 {
   return (c=='.' || c==';' || c=='!' || c=='?');
 }
 
-static inline int is_wordend(const char c)
+static inline bool is_wordend(const char c)
 {
   return (isspace(c) || ispunct(c) || c == '\0');
 }
@@ -49,54 +69,59 @@ SEXP R_readability(SEXP s_)
   newRvec(re, len, "dbl");
   newRvec(gl, len, "dbl");
   
-  char buf[BUFLEN];
   
-  for (int i=0; i<len; i++)
+  #pragma omp parallel
   {
-    uint32_t tot_words = 0;
-    uint32_t tot_nonwords = 0;
-    uint32_t tot_sents = 0;
-    uint32_t tot_sylls = 0;
+    char buf[BUFLEN];
     
-    const char *const s = CHARPT(s_, i);
-    const int slen = strlen(s);
-    
-    int start = 0;
-    int end;
-    
-    for (int j=0; j<=slen; j++)
+    #pragma omp for
+    for (int i=0; i<len; i++)
     {
-      if (is_wordend(s[j]))
+      uint32_t tot_words = 0;
+      uint32_t tot_nonwords = 0;
+      uint32_t tot_sents = 0;
+      uint32_t tot_sylls = 0;
+      
+      const char *const s = CHARPT(s_, i);
+      const int slen = strlen(s);
+      
+      int start = 0;
+      int end;
+      
+      for (int j=0; j<=slen; j++)
       {
-        end = j;
-        if (end-start > BUFLEN)
+        if (is_wordend(s[j]))
         {
-          tot_nonwords++;
-          continue;
-        }
-        else
+          end = j;
+          if (end-start > BUFLEN)
+          {
+            tot_nonwords++;
+            continue;
+          }
+          else
           tot_words++;
-        
-        memcpy(buf, s+start, end-start);
-        buf[end-start] = '\0';
-        tot_sylls += count_syllables(buf, end-start);
-        
-        if (is_sentend(s[j]))
+          
+          memcpy(buf, s+start, end-start);
+          buf[end-start] = '\0';
+          tot_sylls += count_syllables(buf, end-start);
+          
+          if (is_sentend(s[j]))
           tot_sents++;
-        
-        while (ispunct(s[j]) || isspace(s[j]))
+          
+          while (ispunct(s[j]) || isspace(s[j]))
           j++;
-        
-        start = j;
+          
+          start = j;
+        }
       }
+      
+      INT(words, i) = tot_words;
+      INT(nw, i) = tot_nonwords;
+      INT(sents, i) = tot_sents;
+      INT(sylls, i) = tot_sylls;
+      DBL(re, i) = re_score(tot_words, tot_sents, tot_sylls);
+      DBL(gl, i) = gl_score(tot_words, tot_sents, tot_sylls);
     }
-    
-    INT(words, i) = tot_words;
-    INT(nw, i) = tot_nonwords;
-    INT(sents, i) = tot_sents;
-    INT(sylls, i) = tot_sylls;
-    DBL(re, i) = re_score(tot_words, tot_sents, tot_sylls);
-    DBL(gl, i) = gl_score(tot_words, tot_sents, tot_sylls);
   }
   
   ret_names = make_list_names(6, "words", "nonwords", "sentences", "syllables", "reading.ease", "grade.level");
@@ -133,6 +158,7 @@ static inline int count_words(const int len, const char*const restrict buf)
 
 
 
+// NOTE: not thread safe in either loop body because of the R object memory allocations
 SEXP R_sylcount(SEXP s_)
 {
   SEXP ret;
