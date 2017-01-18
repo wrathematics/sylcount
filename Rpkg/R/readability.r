@@ -1,7 +1,13 @@
 #' readability
 #' 
+#' @description
 #' Computes some basic "readability" measurements, namely Flesch reading ease
 #' and Flesch-Kincaid grade level.  The function is vectorized.
+#' 
+#' The function will have some difficulty on poorly processed and cleaned data.
+#' For example, if all punctuation is stripped out, then the number of sentences
+#' detected will always be zero.  However, we do recommend removing quotes
+#' (single and double), as contractions can confuse the parser.
 #' 
 #' @details
 #' The return is split into words and non-words.  A non-word is some block
