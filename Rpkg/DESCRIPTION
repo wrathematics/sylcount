@@ -1,0 +1,18 @@
+Package: sylcount
+Type: Package
+Title: Syllable Counter
+Version: 0.1-0
+Description: TODO
+License: BSD 2-clause License + file LICENSE
+Depends:
+    R (>= 3.0.0)
+LazyData: yes
+LazyLoad: yes
+NeedsCompilation: yes
+ByteCompile: yes
+Authors@R: c(person("Drew", "Schmidt", role=c("aut", "cre"), 
+    email="wrathematics@gmail.com"))
+Maintainer: Drew Schmidt <wrathematics@gmail.com>
+URL: https://github.com/wrathematics/syllcount
+BugReports: https://github.com/wrathematics/syllcount/issues
+RoxygenNote: 5.0.1
