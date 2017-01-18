@@ -105,3 +105,84 @@ SEXP R_readability(SEXP s_)
   R_END;
   return ret;
 }
+
+
+
+
+// -------------------------------------------------------
+
+// can not be put into separate file because gperf data isn't guarded correctly
+
+static inline int count_words(const int len, const char*const restrict buf)
+{
+  int nw = 0;
+  
+  for (int i=0; i<len; i++)
+  {
+    if (is_wordend(buf[i]))
+    {
+      nw++;
+      
+      while (ispunct(buf[i]) || isspace(buf[i]))
+        i++;
+    }
+  }
+  
+  return nw;
+}
+
+
+
+SEXP R_sylcount(SEXP s_)
+{
+  SEXP ret;
+  const int len = LENGTH(s_);
+  
+  if (TYPEOF(s_) != STRSXP)
+    error("input must be a vector of strings");
+  
+  newRlist(ret, len);
+  
+  for (int i=0; i<len; i++)
+  {
+    SEXP localdf, localdf_names;
+    SEXP word, sylls;
+    const char*const s = CHARPT(s_, i);
+    const int slen = strlen(s);
+    
+    int nwords = count_words(slen, s);
+    
+    newRvec(word, nwords, "str");
+    newRvec(sylls, nwords, "int");
+    localdf_names = make_list_names(2, "word", "syllables");
+    localdf = make_dataframe(RNULL, localdf_names, 2, word, sylls);
+    SET_VECTOR_ELT(ret, i, localdf);
+    
+    int start = 0;
+    int end;
+    
+    int words_found = 0;
+    
+    for (int j=0; j<slen; j++)
+    {
+      if (is_wordend(s[j]))
+      {
+        end = j;
+        const int wordlen = end-start;
+        
+        SET_STRING_ELT(word, words_found, mkCharLen(s+start, wordlen));
+        INT(sylls, words_found) = count_syllables(CHARPT(word, words_found), wordlen);
+        
+        while (ispunct(s[j]) || isspace(s[j]))
+        j++;
+        
+        start = j;
+        words_found++;
+      }
+    }
+  }
+  
+  
+  R_END;
+  return ret;
+}
