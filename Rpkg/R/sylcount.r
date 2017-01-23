@@ -16,6 +16,8 @@
 #' 
 #' @param s
 #' A character vector (vector of strings).
+#' @param counts.only
+#' Should only counts be returned, or words + counts.
 #' 
 #' @return
 #' A list of dataframes.
@@ -25,8 +27,9 @@
 #' a <- "I am the very model of a modern major general."
 #' b <- "I have information vegetable, animal, and mineral."
 #' 
-#' sylcount(c(a, b))
+#' sylcount(c(a, b)) # counts.only=TRUE
+#' sylcount(c(a, b), counts.only=FALSE)
 #' 
 #' @seealso \code{\link{readability}}
 #' @export
-sylcount <- function(s) .Call(R_sylcount, s)
+sylcount <- function(s, counts.only=TRUE) .Call(R_sylcount, s, counts.only)

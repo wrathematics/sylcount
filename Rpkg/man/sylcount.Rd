@@ -4,10 +4,12 @@
 \alias{sylcount}
 \title{sylcount}
 \usage{
-sylcount(s)
+sylcount(s, counts.only = TRUE)
 }
 \arguments{
 \item{s}{A character vector (vector of strings).}
+
+\item{counts.only}{Should only counts be returned, or words + counts.}
 }
 \value{
 A list of dataframes.
@@ -32,7 +34,8 @@ library(sylcount)
 a <- "I am the very model of a modern major general."
 b <- "I have information vegetable, animal, and mineral."
 
-sylcount(c(a, b))
+sylcount(c(a, b)) # counts.only=TRUE
+sylcount(c(a, b), counts.only=FALSE)
 
 }
 \seealso{

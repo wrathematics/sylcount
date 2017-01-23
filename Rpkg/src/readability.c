@@ -12,9 +12,13 @@
 #define ITER_PER_CHECK 256
 
 #define CHARPT(x,i) ((char*)CHAR(STRING_ELT(x,i)))
-#define THROW_MEMERR() error("unable to allocate memory")
-#define CHECKMALLOC(s) if (s == NULL) THROW_MEMERR()
+#define THROW_MEMERR error("unable to allocate memory")
+#define CHECKMALLOC(s) if (s == NULL) THROW_MEMERR
 
+
+#define CHECK_IS_FLAG(x, argname) \
+  if (TYPEOF(x) != LGLSXP || LENGTH(x) != 1 || LOGICAL(x)[0] == NA_LOGICAL){ \
+    error("argument '%s' must be a flag", argname);}
 
 // #include <R_ext/Utils.h>
 // static inline void check_interrupt_fun(void *ignored)
@@ -159,14 +163,15 @@ static inline int count_words(const int len, const char*const restrict buf)
 
 
 // NOTE: not thread safe in either loop body because of the R object memory allocations
-SEXP R_sylcount(SEXP s_)
+static SEXP R_sylcount_regular(SEXP s_)
 {
   SEXP ret;
-  const int len = LENGTH(s_);
   
   if (TYPEOF(s_) != STRSXP)
     error("input must be a vector of strings");
   
+  
+  const int len = LENGTH(s_);
   newRlist(ret, len);
   
   for (int i=0; i<len; i++)
@@ -211,4 +216,99 @@ SEXP R_sylcount(SEXP s_)
   
   R_END;
   return ret;
+}
+
+
+
+static SEXP R_sylcount_counts_only(SEXP s_)
+{
+  SEXP ret;
+  
+  // char *buf;
+  // size_t buflen = 256;
+  // buf = malloc(buflen * sizeof(*buf));
+  // CHECKMALLOC(buf);
+  
+  enum {buflen = 64};
+  char buf[buflen];
+  
+  const int len = LENGTH(s_);
+  newRlist(ret, len);
+  
+  for (int i=0; i<len; i++)
+  {
+    SEXP sylls;
+    const char*const s = CHARPT(s_, i);
+    const int slen = strlen(s);
+    
+    int nwords = count_words(slen, s);
+    
+    newRvec(sylls, nwords, "int");
+    SET_VECTOR_ELT(ret, i, sylls);
+    
+    int start = 0;
+    int end;
+    
+    int words_found = 0;
+    
+    for (int j=0; j<slen; j++)
+    {
+      if (is_wordend(s[j]))
+      {
+        end = j;
+        const int wordlen = end-start;
+        
+        // void *realloc_ptr;
+        // if (wordlen > buflen)
+        // {
+        //   while (wordlen > buflen)
+        //     buflen *= 2;
+        //   
+        //   realloc_ptr = realloc(buf, (buflen * sizeof(*buf)));
+        //   if (realloc_ptr == NULL)
+        //   {
+        //     free(buf);
+        //     THROW_MEMERR;
+        //   }
+        // }
+        
+        if (wordlen >= buflen)
+          INT(sylls, words_found) = NA_INTEGER;
+        else
+        {
+          memcpy(buf, s+start, wordlen);
+          buf[wordlen] = '\0';
+          INT(sylls, words_found) = count_syllables(buf, wordlen);
+        }
+        
+        while (ispunct(s[j]) || isspace(s[j]))
+        j++;
+        
+        start = j;
+        words_found++;
+      }
+    }
+  }
+  
+  // free(buf);
+  
+  
+  R_END;
+  return ret;
+}
+
+
+
+SEXP R_sylcount(SEXP s_, SEXP counts_only_)
+{
+  if (TYPEOF(s_) != STRSXP)
+    error("input must be a vector of strings");
+  
+  CHECK_IS_FLAG(counts_only_, "counts.only");
+  const int counts_only = INT(counts_only_);
+  
+  if (counts_only)
+    return R_sylcount_counts_only(s_);
+  else
+    return R_sylcount_regular(s_);
 }
