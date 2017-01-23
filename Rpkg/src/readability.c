@@ -224,8 +224,7 @@ static SEXP R_sylcount_counts_only(SEXP s_)
 {
   SEXP ret;
   
-  enum {buflen = 64};
-  char buf[buflen];
+  char buf[BUFLEN];
   
   const int len = LENGTH(s_);
   newRlist(ret, len);
@@ -253,7 +252,7 @@ static SEXP R_sylcount_counts_only(SEXP s_)
         end = j;
         const int wordlen = end-start;
         
-        if (wordlen >= buflen)
+        if (wordlen >= BUFLEN)
           INT(sylls, words_found) = NA_INTEGER;
         else
         {
