@@ -4418,6 +4418,7 @@ pecuniary, 5
 pedestrian, 4
 pediatrician, 5
 pediatrics, 4
+peeped, 2
 peephole, 2
 peeve, 1
 pejorative, 4
