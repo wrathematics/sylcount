@@ -224,11 +224,6 @@ static SEXP R_sylcount_counts_only(SEXP s_)
 {
   SEXP ret;
   
-  // char *buf;
-  // size_t buflen = 256;
-  // buf = malloc(buflen * sizeof(*buf));
-  // CHECKMALLOC(buf);
-  
   enum {buflen = 64};
   char buf[buflen];
   
@@ -258,20 +253,6 @@ static SEXP R_sylcount_counts_only(SEXP s_)
         end = j;
         const int wordlen = end-start;
         
-        // void *realloc_ptr;
-        // if (wordlen > buflen)
-        // {
-        //   while (wordlen > buflen)
-        //     buflen *= 2;
-        //   
-        //   realloc_ptr = realloc(buf, (buflen * sizeof(*buf)));
-        //   if (realloc_ptr == NULL)
-        //   {
-        //     free(buf);
-        //     THROW_MEMERR;
-        //   }
-        // }
-        
         if (wordlen >= buflen)
           INT(sylls, words_found) = NA_INTEGER;
         else
@@ -289,8 +270,6 @@ static SEXP R_sylcount_counts_only(SEXP s_)
       }
     }
   }
-  
-  // free(buf);
   
   
   R_END;
