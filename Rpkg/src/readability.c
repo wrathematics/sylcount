@@ -146,7 +146,7 @@ static inline int count_words(const int len, const char*const restrict buf)
 {
   int nw = 0;
   
-  for (int i=0; i<len; i++)
+  for (int i=0; i<=len; i++)
   {
     if (is_wordend(buf[i]))
     {
@@ -156,6 +156,8 @@ static inline int count_words(const int len, const char*const restrict buf)
         i++;
     }
   }
+  
+  printf("%d\n", nw);
   
   return nw;
 }
@@ -194,7 +196,7 @@ static SEXP R_sylcount_regular(SEXP s_)
     
     int words_found = 0;
     
-    for (int j=0; j<slen; j++)
+    for (int j=0; j<=slen; j++)
     {
       if (is_wordend(s[j]))
       {
@@ -202,7 +204,11 @@ static SEXP R_sylcount_regular(SEXP s_)
         const int wordlen = end-start;
         
         SET_STRING_ELT(word, words_found, mkCharLen(s+start, wordlen));
-        INT(sylls, words_found) = count_syllables(CHARPT(word, words_found), wordlen);
+        
+        if (wordlen > BUFLEN)
+          INT(sylls, words_found) = NA_INTEGER;
+        else
+          INT(sylls, words_found) = count_syllables(CHARPT(word, words_found), wordlen);
         
         while (ispunct(s[j]) || isspace(s[j]))
         j++;
@@ -245,7 +251,7 @@ static SEXP R_sylcount_counts_only(SEXP s_)
     
     int words_found = 0;
     
-    for (int j=0; j<slen; j++)
+    for (int j=0; j<=slen; j++)
     {
       if (is_wordend(s[j]))
       {
