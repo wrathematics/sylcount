@@ -3,6 +3,9 @@
 #' A simple, vectorized syllable counter for English language text.
 #' 
 #' @details
+#' The maximum supported word length is 64 characters. For any token having more
+#' than 64 characters, the returned syllable count will be \code{NA}.
+#' 
 #' The syllable counter uses a hash table of known, mostly "irregular" (with
 #' respect to syllable counting) words.  If the word is not known to us
 #' (i.e., not in the hash table), then we try to "approximate" the number
@@ -17,7 +20,7 @@
 #' @param s
 #' A character vector (vector of strings).
 #' @param counts.only
-#' Should only counts be returned, or words + counts.
+#' Should only counts be returned, or words + counts?
 #' 
 #' @return
 #' A list of dataframes.
