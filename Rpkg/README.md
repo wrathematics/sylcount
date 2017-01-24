@@ -42,26 +42,28 @@ a <- "I am the very model of a modern major general."
 b <- "I have information vegetable, animal, and mineral."
 ```
 
-Readability scores:
+#### Readability Scores
 
 ```r
 readability(a)
-#   words nonwords sentences syllables reading.ease grade.level
-# 1    10        0         1        16       61.325        7.19
- 
+#   chars words nonwords sents sylls polys     re   gl      ari     smog
+# 1    36    10        0     1    16     1 61.325 7.19 25.70125 8.841846
+
+
 # One at a time
 readability(c(a, b))
-#   words nonwords sentences syllables reading.ease grade.level
-# 1    10        0         1        16    61.325000     7.19000
-# 2     7        0         1        17    -5.727143    15.79714
+#   chars words nonwords sents sylls polys        re       gl      ari      smog
+# 1    36    10        0     1    16     1 61.325000  7.19000 25.70125  8.841846
+# 2    41     7        0     1    17     4 -5.727143 15.79714 11.56941 14.554593
+
 
 # Both at once
 readability(paste0(a, b, collapse=" "))
-#   words nonwords sentences syllables reading.ease grade.level
-# 1    17        0         2        33     33.98397    10.63088
+#   chars words nonwords sents sylls polys       re       gl     ari     smog
+# 1    77    17        0     2    33     5 33.98397 10.63088 18.6353 12.16174
 ```
 
-Syllable counting:
+#### Syllable counting
 
 ```r
 sylcount(a)
