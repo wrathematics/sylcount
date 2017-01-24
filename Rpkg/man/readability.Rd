@@ -21,7 +21,8 @@ A dataframe containing:
   \code{re}        \tab Flesch reading ease score \cr
   \code{gl}        \tab Flesch-Kincaid grade level score \cr
   \code{ari}       \tab Automatic Readability Index score \cr
-  \code{smog}      \tab SMOG score \cr
+  \code{smog}      \tab Simple Measure of Gobbledygook (SMOG) score \cr
+  \code{cl}        \tab the Coleman–Liau Index score \cr
 }
 }
 \description{

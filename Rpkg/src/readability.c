@@ -56,9 +56,9 @@ static inline double gl_score(const uint32_t tot_words, const uint32_t tot_sents
 }
 
 // Automated Readability Index
-static inline double ari_score(const uint32_t tot_chars, const uint32_t tot_words, const uint32_t tot_sents)
+static inline int ari_score(const uint32_t tot_chars, const uint32_t tot_words, const uint32_t tot_sents)
 {
-  return 4.71 * ((double) tot_chars/tot_words) + 0.5 * ((double) tot_words/tot_sents) - 21.43;
+  return (int) ceil(4.71 * ((double) tot_chars/tot_words) + 0.5 * ((double) tot_words/tot_sents) - 21.43);
 }
 
 // Simple Measure of Gobbledygook
@@ -67,13 +67,19 @@ static inline double smog_score(const uint32_t tot_polys, const uint32_t tot_sen
   return 1.043 * sqrt(30.0 * ((double) tot_polys/tot_sents)) + 3.1291;
 }
 
+// Coleman-Lau
+static inline double cl_score(const uint32_t tot_chars, const uint32_t tot_words, const uint32_t tot_sents)
+{
+  return 0.0588 * ((double) 100.0 * tot_chars/tot_words) - 0.296 * ((double) 100.0 * tot_sents/tot_words) - 15.8;
+}
+
 
 
 SEXP R_readability(SEXP s_)
 {
   SEXP ret, ret_names;
   SEXP chars, words, nw, sents, sylls, polys;
-  SEXP ari, re, gl, smog;
+  SEXP ari, re, gl, smog, cl;
   const int len = LENGTH(s_);
   
   if (TYPEOF(s_) != STRSXP)
@@ -87,8 +93,9 @@ SEXP R_readability(SEXP s_)
   newRvec(polys, len, "int");
   newRvec(re, len, "dbl");
   newRvec(gl, len, "dbl");
-  newRvec(ari, len, "dbl");
+  newRvec(ari, len, "int");
   newRvec(smog, len, "dbl");
+  newRvec(cl, len, "dbl");
   
   
   #pragma omp parallel
@@ -155,13 +162,14 @@ SEXP R_readability(SEXP s_)
       INT(polys, i) = tot_polys;
       DBL(re, i) = re_score(tot_words, tot_sents, tot_sylls);
       DBL(gl, i) = gl_score(tot_words, tot_sents, tot_sylls);
-      DBL(ari, i) = ari_score(tot_words, tot_sents, tot_sylls);
+      INT(ari, i) = ari_score(tot_chars, tot_words, tot_sents);
       DBL(smog, i) = smog_score(tot_polys, tot_sents);
+      DBL(cl, i) = cl_score(tot_chars, tot_words, tot_sents);
     }
   }
   
-  ret_names = make_list_names(10, "chars", "words", "nonwords", "sents", "sylls", "polys", "re", "gl", "ari", "smog");
-  ret = make_dataframe(RNULL, ret_names, 10, chars, words, nw, sents, sylls, polys, re, gl, ari, smog);
+  ret_names = make_list_names(11, "chars", "words", "nonwords", "sents", "sylls", "polys", "re", "gl", "ari", "smog", "cl");
+  ret = make_dataframe(RNULL, ret_names, 11, chars, words, nw, sents, sylls, polys, re, gl, ari, smog, cl);
   
   R_END;
   return ret;
