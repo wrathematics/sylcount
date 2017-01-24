@@ -17,9 +17,11 @@ A dataframe containing:
   \code{nonwords}      \tab text tokens that are probably not English language words \cr
   \code{sentences}     \tab the number of sentences recognized in the text \cr
   \code{syllables}     \tab the total number of syllables (ignores all non-words) \cr
+  \code{polys}         \tab the total number of "polysyllables", or words with 3+ syllables \cr
   \code{reading.ease}  \tab Flesch reading ease score \cr
   \code{grade.level}   \tab Flesch-Kincaid grade level score \cr
   \code{ari}           \tab Automatic Readability Index score \cr
+  \code{smog}          \tab SMOG score \cr
 }
 }
 \description{

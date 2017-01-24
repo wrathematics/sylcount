@@ -61,13 +61,19 @@ static inline double ari_score(const uint32_t tot_chars, const uint32_t tot_word
   return 4.71 * ((double) tot_chars/tot_words) + 0.5 * ((double) tot_words/tot_sents) - 21.43;
 }
 
+// Simple Measure of Gobbledygook
+static inline double smog_score(const uint32_t tot_polys, const uint32_t tot_sents)
+{
+  return 1.043 * sqrt(30.0 * ((double) tot_polys/tot_sents)) + 3.1291;
+}
+
 
 
 SEXP R_readability(SEXP s_)
 {
   SEXP ret, ret_names;
-  SEXP chars, words, nw, sents, sylls;
-  SEXP ari, re, gl;
+  SEXP chars, words, nw, sents, sylls, polys;
+  SEXP ari, re, gl, smog;
   const int len = LENGTH(s_);
   
   if (TYPEOF(s_) != STRSXP)
@@ -78,9 +84,11 @@ SEXP R_readability(SEXP s_)
   newRvec(nw, len, "int");
   newRvec(sents, len, "int");
   newRvec(sylls, len, "int");
+  newRvec(polys, len, "int");
   newRvec(re, len, "dbl");
   newRvec(gl, len, "dbl");
   newRvec(ari, len, "dbl");
+  newRvec(smog, len, "dbl");
   
   
   #pragma omp parallel
@@ -95,6 +103,7 @@ SEXP R_readability(SEXP s_)
       uint32_t tot_nonwords = 0;
       uint32_t tot_sents = 0;
       uint32_t tot_sylls = 0;
+      uint32_t tot_polys = 0;
       
       const char *const s = CHARPT(s_, i);
       const int slen = strlen(s);
@@ -120,9 +129,11 @@ SEXP R_readability(SEXP s_)
           
           memcpy(buf, s+start, end-start);
           buf[end-start] = '\0';
-          tot_sylls += count_syllables(buf, end-start);
           
-          printf("%s %d\n", buf, count_syllables(buf, end-start));
+          uint32_t word_sylls = count_syllables(buf, end-start);
+          tot_sylls += word_sylls;
+          if (word_sylls > 2)
+            tot_polys++;
           
           if (is_sentend(s[j]))
             tot_sents++;
@@ -141,14 +152,16 @@ SEXP R_readability(SEXP s_)
       INT(nw, i) = tot_nonwords;
       INT(sents, i) = tot_sents;
       INT(sylls, i) = tot_sylls;
+      INT(polys, i) = tot_polys;
       DBL(re, i) = re_score(tot_words, tot_sents, tot_sylls);
       DBL(gl, i) = gl_score(tot_words, tot_sents, tot_sylls);
       DBL(ari, i) = ari_score(tot_words, tot_sents, tot_sylls);
+      DBL(smog, i) = smog_score(tot_polys, tot_sents);
     }
   }
   
-  ret_names = make_list_names(8, "chars", "words", "nonwords", "sentences", "syllables", "reading.ease", "grade.level", "ari");
-  ret = make_dataframe(RNULL, ret_names, 8, chars, words, nw, sents, sylls, re, gl, ari);
+  ret_names = make_list_names(10, "chars", "words", "nonwords", "sentences", "syllables", "polys", "reading.ease", "grade.level", "ari", "smog");
+  ret = make_dataframe(RNULL, ret_names, 10, chars, words, nw, sents, sylls, polys, re, gl, ari, smog);
   
   R_END;
   return ret;
