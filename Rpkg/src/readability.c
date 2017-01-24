@@ -125,6 +125,10 @@ SEXP R_readability(SEXP s_)
         
         if (is_wordend(s[j]))
         {
+          // try to account for acronyms
+          while (ispunct(s[j]) && !isspace(s[j+1]))
+            j++;
+          
           end = j;
           if (end-start > BUFLEN)
           {
