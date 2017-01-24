@@ -157,8 +157,6 @@ static inline int count_words(const int len, const char*const restrict buf)
     }
   }
   
-  printf("%d\n", nw);
-  
   return nw;
 }
 
