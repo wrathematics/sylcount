@@ -160,7 +160,7 @@ SEXP R_readability(SEXP s_)
     }
   }
   
-  ret_names = make_list_names(10, "chars", "words", "nonwords", "sentences", "syllables", "polys", "reading.ease", "grade.level", "ari", "smog");
+  ret_names = make_list_names(10, "chars", "words", "nonwords", "sents", "sylls", "polys", "re", "gl", "ari", "smog");
   ret = make_dataframe(RNULL, ret_names, 10, chars, words, nw, sents, sylls, polys, re, gl, ari, smog);
   
   R_END;
