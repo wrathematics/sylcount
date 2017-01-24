@@ -55,23 +55,32 @@ static inline double gl_score(const uint32_t tot_words, const uint32_t tot_sents
   return 0.39 * ((double) tot_words/tot_sents) + 11.8 * ((double) tot_sylls/tot_words) - 15.59;
 }
 
+// Automated Readability Index
+static inline double ari_score(const uint32_t tot_chars, const uint32_t tot_words, const uint32_t tot_sents)
+{
+  return 4.71 * ((double) tot_chars/tot_words) + 0.5 * ((double) tot_words/tot_sents) - 21.43;
+}
+
 
 
 SEXP R_readability(SEXP s_)
 {
   SEXP ret, ret_names;
-  SEXP words, nw, sents, sylls, re, gl;
+  SEXP chars, words, nw, sents, sylls;
+  SEXP ari, re, gl;
   const int len = LENGTH(s_);
   
   if (TYPEOF(s_) != STRSXP)
     error("input must be a vector of strings");
   
+  newRvec(chars, len, "int");
   newRvec(words, len, "int");
   newRvec(nw, len, "int");
   newRvec(sents, len, "int");
   newRvec(sylls, len, "int");
   newRvec(re, len, "dbl");
   newRvec(gl, len, "dbl");
+  newRvec(ari, len, "dbl");
   
   
   #pragma omp parallel
@@ -81,6 +90,7 @@ SEXP R_readability(SEXP s_)
     #pragma omp for
     for (int i=0; i<len; i++)
     {
+      uint32_t tot_chars = 0;
       uint32_t tot_words = 0;
       uint32_t tot_nonwords = 0;
       uint32_t tot_sents = 0;
@@ -94,6 +104,9 @@ SEXP R_readability(SEXP s_)
       
       for (int j=0; j<=slen; j++)
       {
+        if (isalnum(s[j]))
+          tot_chars++;
+        
         if (is_wordend(s[j]))
         {
           end = j;
@@ -103,33 +116,39 @@ SEXP R_readability(SEXP s_)
             continue;
           }
           else
-          tot_words++;
+            tot_words++;
           
           memcpy(buf, s+start, end-start);
           buf[end-start] = '\0';
           tot_sylls += count_syllables(buf, end-start);
           
+          printf("%s %d\n", buf, count_syllables(buf, end-start));
+          
           if (is_sentend(s[j]))
-          tot_sents++;
+            tot_sents++;
           
           while (ispunct(s[j]) || isspace(s[j]))
-          j++;
+            j++;
           
           start = j;
+          if (isalnum(s[j]))
+            tot_chars++;
         }
       }
       
+      INT(chars, i) = tot_chars;
       INT(words, i) = tot_words;
       INT(nw, i) = tot_nonwords;
       INT(sents, i) = tot_sents;
       INT(sylls, i) = tot_sylls;
       DBL(re, i) = re_score(tot_words, tot_sents, tot_sylls);
       DBL(gl, i) = gl_score(tot_words, tot_sents, tot_sylls);
+      DBL(ari, i) = ari_score(tot_words, tot_sents, tot_sylls);
     }
   }
   
-  ret_names = make_list_names(6, "words", "nonwords", "sentences", "syllables", "reading.ease", "grade.level");
-  ret = make_dataframe(RNULL, ret_names, 6, words, nw, sents, sylls, re, gl);
+  ret_names = make_list_names(8, "chars", "words", "nonwords", "sentences", "syllables", "reading.ease", "grade.level", "ari");
+  ret = make_dataframe(RNULL, ret_names, 8, chars, words, nw, sents, sylls, re, gl, ari);
   
   R_END;
   return ret;
@@ -209,7 +228,7 @@ static SEXP R_sylcount_regular(SEXP s_)
           INT(sylls, words_found) = count_syllables(CHARPT(word, words_found), wordlen);
         
         while (ispunct(s[j]) || isspace(s[j]))
-        j++;
+          j++;
         
         start = j;
         words_found++;
@@ -266,7 +285,7 @@ static SEXP R_sylcount_counts_only(SEXP s_)
         }
         
         while (ispunct(s[j]) || isspace(s[j]))
-        j++;
+          j++;
         
         start = j;
         words_found++;

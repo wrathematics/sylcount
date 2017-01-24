@@ -22,12 +22,14 @@
 #' @return
 #' A dataframe containing:
 #' \tabular{ll}{
+#'   \code{chars}         \tab the number of alphanumeric characters \cr
 #'   \code{words}         \tab text tokens that are probably English language words \cr
 #'   \code{nonwords}      \tab text tokens that are probably not English language words \cr
 #'   \code{sentences}     \tab the number of sentences recognized in the text \cr
 #'   \code{syllables}     \tab the total number of syllables (ignores all non-words) \cr
 #'   \code{reading.ease}  \tab Flesch reading ease score \cr
 #'   \code{grade.level}   \tab Flesch-Kincaid grade level score \cr
+#'   \code{ari}           \tab Automatic Readability Index score \cr
 #' }
 #' 
 #' @param s
