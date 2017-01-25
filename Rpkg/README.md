@@ -7,9 +7,7 @@
 
 
 
-A simple English language syllable counter, plus readability score measure-er.  The package has been optimized to be very efficient, both in terms of run time performance and memory consumption.  The main methods `sylcount()` and `readability()` are both vectorized.
-
-For performance considerations, 
+A simple English language syllable counter, plus readability score measure-er.  The package has been optimized to be very efficient, both in terms of run time performance and memory consumption.  The main methods `sylcount()` and `readability()` are both vectorized by document.  Scores for multiple documents are computed in parallel.
 
 
 
