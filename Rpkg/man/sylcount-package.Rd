@@ -11,4 +11,3 @@ TODO
 Drew Schmidt \email{wrathematics AT gmail.com}
 }
 \keyword{Package}
-

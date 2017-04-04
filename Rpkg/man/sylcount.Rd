@@ -44,4 +44,3 @@ sylcount(c(a, b), counts.only=FALSE)
 \seealso{
 \code{\link{readability}}
 }
-
