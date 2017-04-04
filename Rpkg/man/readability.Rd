@@ -22,7 +22,7 @@ A dataframe containing:
   \code{gl}        \tab Flesch-Kincaid grade level score \cr
   \code{ari}       \tab Automatic Readability Index score \cr
   \code{smog}      \tab Simple Measure of Gobbledygook (SMOG) score \cr
-  \code{cl}        \tab the Coleman–Liau Index score \cr
+  \code{cl}        \tab the Coleman-Liau Index score \cr
 }
 }
 \description{
@@ -67,4 +67,3 @@ Millington TN Research Branch, 1975.
 \seealso{
 \code{\link{sylcount}}
 }
-
