@@ -6,7 +6,6 @@
 
 #include "include/RNACI.h"
 #include "include/safeomp.h"
-#include "include/reactor.h"
 #include "hashtable/sylcount.h"
 
 #define BUFLEN 64
@@ -16,6 +15,13 @@
 #define THROW_MEMERR error("unable to allocate memory")
 #define CHECKMALLOC(s) if (s == NULL) THROW_MEMERR
 
+#define CHECK_IS_FLAG(x, argname) \
+  if (TYPEOF(x) != LGLSXP || LENGTH(x) != 1 || LOGICAL(x)[0] == NA_LOGICAL){ \
+    error("argument '%s' must be a flag", argname);}
+
+#define CHECK_IS_STRINGS(s) \
+  if(LENGTH(s) < 1 || TYPEOF(s) != STRSXP){ \
+    error("argument 's' must be a vector of strings\n");}
 
 // #include <R_ext/Utils.h>
 // static inline void check_interrupt_fun(void *ignored)
@@ -83,7 +89,7 @@ SEXP R_readability(SEXP s_)
   SEXP ari, re, gl, smog, cl;
   const int len = LENGTH(s_);
   
-  CHECK_IS_STRINGS(s_, "s");
+  CHECK_IS_STRINGS(s_);
   
   newRvec(chars, len, "int");
   newRvec(words, len, "int");
@@ -322,13 +328,13 @@ static SEXP R_sylcount_counts_only(SEXP s_)
 
 
 
-SEXP R_sylcount(SEXP s_, SEXP counts_only)
+SEXP R_sylcount(SEXP s, SEXP counts_only)
 {
-  CHECK_IS_STRINGS(s_, "s");
+  CHECK_IS_STRINGS(s);
   CHECK_IS_FLAG(counts_only, "counts.only");
   
   if (INT(counts_only))
-    return R_sylcount_counts_only(s_);
+    return R_sylcount_counts_only(s);
   else
-    return R_sylcount_regular(s_);
+    return R_sylcount_regular(s);
 }
