@@ -5,7 +5,7 @@
 \alias{sylcount-package}
 \title{sylcount: Syllable Counting and Readability Measurements}
 \description{
-TODO
+An English language syllable counter, plus readability score measure-er.
 }
 \author{
 Drew Schmidt \email{wrathematics AT gmail.com}
