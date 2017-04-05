@@ -12,11 +12,11 @@ A simple English language syllable counter, plus readability score measure-er.  
 
 ## Installation
 
-<!-- You can install the stable version from CRAN using the usual `install.packages()`:
+You can install the stable version from CRAN using the usual `install.packages()`:
 
 ```r
 install.packages("sylcount")
-``` -->
+```
 
 The development version is maintained on GitHub, and can easily be installed by any of the packages that offer installations from GitHub:
 
