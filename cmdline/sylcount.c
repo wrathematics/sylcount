@@ -3,26 +3,21 @@
 #include <ctype.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <string.h>
+
 #include "sylcount.h"
-
-
-#define MAX(a,b) (a<b?b:a)
 
 
 static inline bool isvowel(const char c)
 {
-  if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' || c == 'y' ||
-      c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U' || c == 'Y')
-    return true;
-  else
-    return false;
+  return (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' || c == 'y' ||
+          c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U' || c == 'Y');
 }
 
 static inline int count_syllables(char *str, const int len)
 {
   int nsyls;
-  str[len+1] = '\0'; // SHOULDN'T HAVE TO DO THIS, FUCKING GPERF GARBAGE
-  sylcount_t *s = in_word_set(str, len+1);
+  const sylcount_t *const restrict s = in_word_set(str, len);
   
   if (NULL == s)
   {
@@ -36,7 +31,9 @@ static inline int count_syllables(char *str, const int len)
   else
     nsyls = s->syls;
   
-  return MAX(1, nsyls);
+  // printf("%d %s %d\n", s==NULL, str, nsyls);
+  
+  return SYLCOUNT_MAX(1, nsyls);
 }
 
 
@@ -93,6 +90,8 @@ static int process(const char *input)
   uint32_t buflen = BUFLEN;
   int start, end, wordlen, nsyls;
   
+  end = 0;
+  
   fp = fopen(input, "r");
   if (!fp)
     return READ_FAIL;
@@ -127,10 +126,8 @@ static int process(const char *input)
 /*    printf("NEWLINE\n");*/
   }
   
-  
-  cleanup:
-    fclose(fp);
-    free(buf);
+  fclose(fp);
+  free(buf);
   
   return 0;
 }
@@ -154,5 +151,3 @@ int main(int argc, char **argv)
   
   return 0;
 }
-
-

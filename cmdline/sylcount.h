@@ -7,6 +7,8 @@
 
 typedef struct sylcount sylcount_t;
 
+#define SYLCOUNT_MAX(a,b) (a<b?b:a)
+
 
 #define BUFLEN         4096
 #define WORD_OVERFLOW   128
