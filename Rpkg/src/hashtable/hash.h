@@ -173,7 +173,7 @@ __inline
 __attribute__ ((__gnu_inline__))
 #endif
 #endif
-const struct sylcount *
+static const struct sylcount *
 in_word_set (str, len)
      register const char *str;
      register unsigned int len;
