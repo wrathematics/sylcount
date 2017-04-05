@@ -4,8 +4,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "RNACI.h"
-#include "safeomp.h"
+#include "include/RNACI.h"
+#include "include/safeomp.h"
 #include "hashtable/sylcount.h"
 
 #define BUFLEN 64
@@ -32,6 +32,10 @@
 // }
 
 
+
+// -------------------------------------------------------
+// Various "readability" score-ers
+// -------------------------------------------------------
 
 static inline bool is_sentend(const char c)
 {
@@ -181,10 +185,10 @@ SEXP R_readability(SEXP s_)
 
 
 
-
 // -------------------------------------------------------
-
+// Syllable counter
 // can not be put into separate file because gperf data isn't guarded correctly
+// -------------------------------------------------------
 
 static inline int count_words(const int len, const char*const restrict buf)
 {
