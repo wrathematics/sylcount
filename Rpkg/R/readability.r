@@ -45,6 +45,15 @@
 #' enlisted personnel. No. RBR-8-75. Naval Technical Training Command
 #' Millington TN Research Branch, 1975.
 #' 
+#' Senter, R. J., and Edgar A. Smith. Automated readability index. CINCINNATI
+#' UNIV OH, 1967.
+#' 
+#' Mc Laughlin, G. Harry. "SMOG grading-a new readability formula." Journal of
+#' reading 12.8 (1969): 639-646.
+#' 
+#' Coleman, Meri, and Ta Lin Liau. "A computer readability formula designed for
+#' machine scoring." Journal of Applied Psychology 60.2 (1975): 283.
+#' 
 #' @examples
 #' library(sylcount)
 #' a <- "I am the very model of a modern major general."
