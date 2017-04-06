@@ -213,7 +213,7 @@ static inline int count_words(const int len, const char*const restrict buf)
 
 
 // NOTE: not thread safe in either loop body because of the R object memory allocations
-static SEXP R_sylcount_regular(SEXP s_)
+static SEXP R_sylcount_countsAndWords(SEXP s_)
 {
   SEXP ret;
   
@@ -271,7 +271,7 @@ static SEXP R_sylcount_regular(SEXP s_)
 
 
 
-static SEXP R_sylcount_counts_only(SEXP s_)
+static SEXP R_sylcount_countsOnly(SEXP s_)
 {
   SEXP ret;
   
@@ -334,7 +334,7 @@ SEXP R_sylcount(SEXP s, SEXP counts_only)
   CHECK_IS_FLAG(counts_only, "counts.only");
   
   if (INT(counts_only))
-    return R_sylcount_counts_only(s);
+    return R_sylcount_countsOnly(s);
   else
-    return R_sylcount_regular(s);
+    return R_sylcount_countsAndWords(s);
 }
