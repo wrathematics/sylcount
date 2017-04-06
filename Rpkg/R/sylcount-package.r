@@ -1,6 +1,10 @@
 #' sylcount: Syllable Counting and Readability Measurements
 #' 
-#' An English language syllable counter, plus readability score measure-er.
+#' An English language syllable counter, plus readability score
+#' measure-er.  The package has been carefully optimized and should be very
+#' efficient, both in terms of run time performance and memory consumption.
+#' The main methods 'vectorized' by document, and scores for multiple documents
+#' are computed in parallel via 'OpenMP'.
 #' 
 #' @useDynLib sylcount R_readability R_sylcount
 #' 
