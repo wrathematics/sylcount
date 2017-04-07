@@ -5,7 +5,7 @@
 #include <stdint.h>
 
 #include "include/RNACI.h"
-#include "hashtable/sylcount.h"
+#include "include/sylcount.h"
 
 #define BUFLEN 64
 #define ITER_PER_CHECK 256
