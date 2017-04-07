@@ -123,7 +123,7 @@ SEXP R_readability(SEXP s_)
       int start = 0;
       int end;
       
-      for (int j=0; j<=slen; j++)
+      for (int j=0; j<=slen && slen>0; j++)
       {
         if (isalnum(s[j]))
           tot_wordchars++;
@@ -179,6 +179,7 @@ SEXP R_readability(SEXP s_)
       DBL(cl, i) = cl_score(tot_wordchars, tot_words, tot_sents);
     }
   }
+  
   
   ret_names = make_list_names(12, "chars", "wordchars", "words", "nonwords", "sents", "sylls", "polys", "re", "gl", "ari", "smog", "cl");
   ret = make_dataframe(RNULL, ret_names, 12, chars, wordchars, words, nw, sents, sylls, polys, re, gl, ari, smog, cl);
@@ -291,6 +292,13 @@ static SEXP R_sylcount_countsOnly(SEXP s_)
     const char*const s = CHARPT(s_, i);
     const int slen = strlen(s);
     
+    if (slen == 0)
+    {
+      SET_VECTOR_ELT(ret, i, ScalarInteger(NA_INTEGER));
+      continue;
+    }
+    
+    
     int nwords = count_words(slen, s);
     
     newRvec(sylls, nwords, "int");
@@ -390,7 +398,7 @@ SEXP R_corpus_summary(SEXP s_)
       int start = 0;
       int end;
       
-      for (int j=0; j<=slen; j++)
+      for (int j=0; j<=slen && slen>0; j++)
       {
         if (isalnum(s[j]))
           tot_wordchars++;

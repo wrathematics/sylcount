@@ -40,8 +40,6 @@ static inline int count_syllables(const char *const restrict str, const int len)
   else
     nsyls = s->syls;
   
-  printf("%s %d %d\n", str, nsyls, NULL==s);
-  
   return SYLCOUNT_MAX(1, nsyls);
 }
 
