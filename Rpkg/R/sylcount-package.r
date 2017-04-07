@@ -6,7 +6,7 @@
 #' The main methods 'vectorized' by document, and scores for multiple documents
 #' are computed in parallel via 'OpenMP'.
 #' 
-#' @useDynLib sylcount R_readability R_sylcount
+#' @useDynLib sylcount R_readability R_sylcount R_corpus_summary
 #' 
 #' @name sylcount-package
 #' @docType package

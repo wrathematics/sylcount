@@ -34,12 +34,6 @@
 //   return (R_ToplevelExec(check_interrupt_fun, NULL) == FALSE);
 // }
 
-
-
-// -------------------------------------------------------
-// Various "readability" score-ers
-// -------------------------------------------------------
-
 static inline bool is_sentend(const char c)
 {
   return (c=='.' || c==';' || c=='!' || c=='?');
@@ -49,6 +43,11 @@ static inline bool is_wordend(const char c)
 {
   return (isspace(c) || ispunct(c) || c == '\0');
 }
+
+
+// -------------------------------------------------------
+// Various "readability" score-ers
+// -------------------------------------------------------
 
 // Flesch reading ease
 static inline double re_score(const uint32_t tot_words, const uint32_t tot_sents, const uint32_t tot_sylls)
@@ -85,13 +84,14 @@ static inline double cl_score(const uint32_t tot_chars, const uint32_t tot_words
 SEXP R_readability(SEXP s_)
 {
   SEXP ret, ret_names;
-  SEXP chars, words, nw, sents, sylls, polys;
+  SEXP chars, wordchars, words, nw, sents, sylls, polys;
   SEXP ari, re, gl, smog, cl;
   const int len = LENGTH(s_);
   
   CHECK_IS_STRINGS(s_);
   
   newRvec(chars, len, "int");
+  newRvec(wordchars, len, "int");
   newRvec(words, len, "int");
   newRvec(nw, len, "int");
   newRvec(sents, len, "int");
@@ -111,7 +111,7 @@ SEXP R_readability(SEXP s_)
     #pragma omp for
     for (int i=0; i<len; i++)
     {
-      uint32_t tot_chars = 0;
+      uint32_t tot_wordchars = 0;
       uint32_t tot_words = 0;
       uint32_t tot_nonwords = 0;
       uint32_t tot_sents = 0;
@@ -127,7 +127,9 @@ SEXP R_readability(SEXP s_)
       for (int j=0; j<=slen; j++)
       {
         if (isalnum(s[j]))
-          tot_chars++;
+          tot_wordchars++;
+        else if (is_sentend(s[j]))
+          tot_sents++;
         
         if (is_wordend(s[j]))
         {
@@ -160,11 +162,12 @@ SEXP R_readability(SEXP s_)
           
           start = j;
           if (isalnum(s[j]))
-            tot_chars++;
+            tot_wordchars++;
         }
       }
       
-      INT(chars, i) = tot_chars;
+      INT(chars, i) = slen;
+      INT(wordchars, i) = tot_wordchars;
       INT(words, i) = tot_words;
       INT(nw, i) = tot_nonwords;
       INT(sents, i) = tot_sents;
@@ -172,14 +175,14 @@ SEXP R_readability(SEXP s_)
       INT(polys, i) = tot_polys;
       DBL(re, i) = re_score(tot_words, tot_sents, tot_sylls);
       DBL(gl, i) = gl_score(tot_words, tot_sents, tot_sylls);
-      INT(ari, i) = ari_score(tot_chars, tot_words, tot_sents);
+      INT(ari, i) = ari_score(tot_wordchars, tot_words, tot_sents);
       DBL(smog, i) = smog_score(tot_polys, tot_sents);
-      DBL(cl, i) = cl_score(tot_chars, tot_words, tot_sents);
+      DBL(cl, i) = cl_score(tot_wordchars, tot_words, tot_sents);
     }
   }
   
-  ret_names = make_list_names(11, "chars", "words", "nonwords", "sents", "sylls", "polys", "re", "gl", "ari", "smog", "cl");
-  ret = make_dataframe(RNULL, ret_names, 11, chars, words, nw, sents, sylls, polys, re, gl, ari, smog, cl);
+  ret_names = make_list_names(12, "chars", "wordchars", "words", "nonwords", "sents", "sylls", "polys", "re", "gl", "ari", "smog", "cl");
+  ret = make_dataframe(RNULL, ret_names, 12, chars, wordchars, words, nw, sents, sylls, polys, re, gl, ari, smog, cl);
   
   R_END;
   return ret;
@@ -212,7 +215,7 @@ static inline int count_words(const int len, const char*const restrict buf)
 
 
 
-// NOTE: not thread safe in either loop body because of the R object memory allocations
+// NOTE: not thread safe because of the R object memory allocations
 static SEXP R_sylcount_countsAndWords(SEXP s_)
 {
   SEXP ret;
@@ -273,6 +276,7 @@ static SEXP R_sylcount_countsAndWords(SEXP s_)
 
 
 
+// NOTE: not thread safe because of the R object memory allocations
 static SEXP R_sylcount_countsOnly(SEXP s_)
 {
   SEXP ret;
@@ -342,4 +346,106 @@ SEXP R_sylcount(SEXP s, SEXP counts_only)
     return R_sylcount_countsOnly(s);
   else
     return R_sylcount_countsAndWords(s);
+}
+
+
+
+// -------------------------------------------------------
+// Basic text document count summaries
+// -------------------------------------------------------
+
+SEXP R_corpus_summary(SEXP s_)
+{
+  SEXP ret, ret_names;
+  SEXP chars, wordchars, words, nw, sents, sylls, polys;
+  const int len = LENGTH(s_);
+  
+  CHECK_IS_STRINGS(s_);
+  
+  newRvec(chars, len, "int");
+  newRvec(wordchars, len, "int");
+  newRvec(words, len, "int");
+  newRvec(nw, len, "int");
+  newRvec(sents, len, "int");
+  newRvec(sylls, len, "int");
+  newRvec(polys, len, "int");
+  
+  
+  #pragma omp parallel
+  {
+    char buf[BUFLEN];
+    
+    #pragma omp for
+    for (int i=0; i<len; i++)
+    {
+      uint32_t tot_wordchars = 0;
+      uint32_t tot_words = 0;
+      uint32_t tot_nonwords = 0;
+      uint32_t tot_sents = 0;
+      uint32_t tot_sylls = 0;
+      uint32_t tot_polys = 0;
+      
+      const char *const s = CHARPT(s_, i);
+      const int slen = strlen(s);
+      
+      int start = 0;
+      int end;
+      
+      for (int j=0; j<=slen; j++)
+      {
+        if (isalnum(s[j]))
+          tot_wordchars++;
+        else if (is_sentend(s[j]))
+          tot_sents++;
+        
+        if (is_wordend(s[j]))
+        {
+          // try to account for acronyms
+          while (ispunct(s[j]) && !isspace(s[j+1]))
+            j++;
+          
+          end = j;
+          if (end-start > BUFLEN)
+          {
+            tot_nonwords++;
+            continue;
+          }
+          else
+            tot_words++;
+          
+          memcpy(buf, s+start, end-start);
+          buf[end-start] = '\0';
+          
+          uint32_t word_sylls = count_syllables(buf, end-start);
+          tot_sylls += word_sylls;
+          if (word_sylls > 2)
+            tot_polys++;
+          
+          if (is_sentend(s[j]))
+            tot_sents++;
+          
+          while (ispunct(s[j]) || isspace(s[j]))
+            j++;
+          
+          start = j;
+          if (isalnum(s[j]))
+            tot_wordchars++;
+        }
+      }
+      
+      INT(chars, i) = slen;
+      INT(wordchars, i) = tot_wordchars;
+      INT(words, i) = tot_words;
+      INT(nw, i) = tot_nonwords;
+      INT(sents, i) = tot_sents;
+      INT(sylls, i) = tot_sylls;
+      INT(polys, i) = tot_polys;
+    }
+  }
+  
+  ret_names = make_list_names(7, "chars", "wordchars", "words", "nonwords", "sents", "sylls", "polys");
+  ret = make_dataframe(RNULL, ret_names, 7, chars, wordchars, words, nw, sents, sylls, polys);
+  
+  R_END;
+  return ret;
 }
