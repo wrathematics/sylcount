@@ -56,6 +56,7 @@
 #' machine scoring." Journal of Applied Psychology 60.2 (1975): 283.
 #' 
 #' @examples
+#' \dontrun{
 #' library(sylcount)
 #' a <- "I am the very model of a modern major general."
 #' b <- "I have information vegetable, animal, and mineral."
@@ -66,6 +67,7 @@
 #' readability(c(a, b))
 #' # Both at once
 #' readability(paste0(a, b, collapse=" "))
+#' }
 #' 
 #' @seealso \code{\link{doc_counts}}
 #' @export

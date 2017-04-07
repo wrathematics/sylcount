@@ -26,12 +26,14 @@
 #' A list of dataframes.
 #' 
 #' @examples
+#' \dontrun{
 #' library(sylcount)
 #' a <- "I am the very model of a modern major general."
 #' b <- "I have information vegetable, animal, and mineral."
 #' 
 #' sylcount(c(a, b))
 #' sylcount(c(a, b), counts.only=FALSE)
+#' }
 #' 
 #' @seealso \code{\link{readability}}
 #' @export

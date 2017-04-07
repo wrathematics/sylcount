@@ -47,6 +47,7 @@ division is made in an attempt to improve run-time and memory performance.
 For implementation details, see the Details section of \code{?sylcount}.
 }
 \examples{
+\dontrun{
 library(sylcount)
 a <- "I am the very model of a modern major general."
 b <- "I have information vegetable, animal, and mineral."
@@ -57,6 +58,7 @@ readability(a)
 readability(c(a, b))
 # Both at once
 readability(paste0(a, b, collapse=" "))
+}
 
 }
 \references{
