@@ -5,8 +5,8 @@ Version: 0.1-0
 Description: An English language syllable counter, plus readability score
     measure-er.  The package has been carefully optimized and should be very
     efficient, both in terms of run time performance and memory consumption.
-    The main methods 'vectorized' by document, and scores for multiple documents
-    are computed in parallel via 'OpenMP'.
+    The main methods are 'vectorized' by document, and scores for multiple
+    documents are computed in parallel via 'OpenMP'.
 License: BSD 2-clause License + file LICENSE
 Depends:
     R (>= 3.0.0)
