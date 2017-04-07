@@ -217,7 +217,6 @@ static SEXP R_sylcount_countsAndWords(SEXP s_)
 {
   SEXP ret;
   
-  
   const int len = LENGTH(s_);
   newRlist(ret, len);
   
@@ -262,10 +261,13 @@ static SEXP R_sylcount_countsAndWords(SEXP s_)
         words_found++;
       }
     }
+    
+    UNPROTECT(5);
   }
   
   
-  R_END;
+  // R_END;
+  UNPROTECT(1);
   return ret;
 }
 
@@ -319,10 +321,13 @@ static SEXP R_sylcount_countsOnly(SEXP s_)
         words_found++;
       }
     }
+    
+    UNPROTECT(1);
   }
   
   
-  R_END;
+  // R_END;
+  UNPROTECT(1);
   return ret;
 }
 
