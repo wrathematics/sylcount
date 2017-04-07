@@ -5,7 +5,6 @@
 #include <stdint.h>
 
 #include "include/RNACI.h"
-#include "include/safeomp.h"
 #include "hashtable/sylcount.h"
 
 #define BUFLEN 64
