@@ -12,7 +12,8 @@ readability(s)
 \value{
 A dataframe containing:
 \tabular{ll}{
-  \code{chars}     \tab the number of alphanumeric characters \cr
+  \code{chars}     \tab the total numberof characters \cr
+  \code{wordchars} \tab the number of alphanumeric characters \cr
   \code{words}     \tab text tokens that are probably English language words \cr
   \code{nonwords}  \tab text tokens that are probably not English language words \cr
   \code{sents}     \tab the number of sentences recognized in the text \cr
@@ -74,5 +75,5 @@ Coleman, Meri, and Ta Lin Liau. "A computer readability formula designed for
 machine scoring." Journal of Applied Psychology 60.2 (1975): 283.
 }
 \seealso{
-\code{\link{sylcount}}
+\code{\link{doc_counts}}
 }

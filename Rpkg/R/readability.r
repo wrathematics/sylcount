@@ -23,7 +23,8 @@
 #' @return
 #' A dataframe containing:
 #' \tabular{ll}{
-#'   \code{chars}     \tab the number of alphanumeric characters \cr
+#'   \code{chars}     \tab the total numberof characters \cr
+#'   \code{wordchars} \tab the number of alphanumeric characters \cr
 #'   \code{words}     \tab text tokens that are probably English language words \cr
 #'   \code{nonwords}  \tab text tokens that are probably not English language words \cr
 #'   \code{sents}     \tab the number of sentences recognized in the text \cr
@@ -66,6 +67,6 @@
 #' # Both at once
 #' readability(paste0(a, b, collapse=" "))
 #' 
-#' @seealso \code{\link{sylcount}}
+#' @seealso \code{\link{doc_counts}}
 #' @export
 readability <- function(s) .Call(R_readability, s)
