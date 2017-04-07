@@ -5,6 +5,8 @@ b = "I have information vegetable, animal, and mineral."
 x = c(a, b)
 y = paste0(a, b, collapse=" ")
 
+
+
 test = sum(sylcount(a)[[1]])
 truth = 16L
 stopifnot(identical(truth, test))
@@ -21,7 +23,6 @@ truth = list(
   as.integer(c(1, 1, 4, 4, 3, 1, 3))
 )
 stopifnot(identical(test, truth))
-
 
 test = sylcount(y)[[1]]
 stopifnot(identical(test, unlist(truth)))
