@@ -15,7 +15,7 @@ sylcount(s, counts.only = TRUE)
 A list of dataframes.
 }
 \description{
-A simple, vectorized syllable counter for English language text.
+A vectorized syllable counter for English language text.
 }
 \details{
 The maximum supported word length is 64 characters. For any token having more
@@ -37,7 +37,7 @@ library(sylcount)
 a <- "I am the very model of a modern major general."
 b <- "I have information vegetable, animal, and mineral."
 
-sylcount(c(a, b)) # counts.only=TRUE
+sylcount(c(a, b))
 sylcount(c(a, b), counts.only=FALSE)
 
 }
