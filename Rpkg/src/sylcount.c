@@ -306,9 +306,9 @@ static SEXP R_sylcount_countsOnly(SEXP s_)
       if (is_wordend(s[j]))
       {
         end = j;
-        const int wordlen = end-start;
+        const int wordlen = end - start;
         
-        if (wordlen >= BUFLEN)
+        if (wordlen > BUFLEN)
           INT(sylls, words_found) = NA_INTEGER;
         else
         {

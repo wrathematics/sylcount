@@ -9,7 +9,7 @@
 
 typedef struct sylcount sylcount_t;
 
-#define SYLCOUNT_MAX(a,b) (a<b?b:a)
+#define SYLCOUNT_MAX(a,b) ((a)<(b)?(b):(a))
 
 
 static inline bool isvowel(const char c)
@@ -18,24 +18,29 @@ static inline bool isvowel(const char c)
           c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U' || c == 'Y');
 }
 
-static inline int count_syllables(char *str, const int len)
+static inline int count_syllables(const char *const restrict str, const int len)
 {
   int nsyls;
   const sylcount_t *const restrict s = in_word_set(str, len);
   
   if (NULL == s)
   {
-    nsyls = 0;
-    for (int i=0; i<=len; i++)
+    if (len == 1)
+      nsyls = 1;
+    else
     {
-      if (isvowel(str[i]) && !isvowel(str[i-1]))
-        nsyls++;
+      nsyls = isvowel(str[0]);
+      for (int i=1; i<len; i++)
+      {
+        if (isvowel(str[i]) && !isvowel(str[i-1]))
+          nsyls++;
+      }
     }
   }
   else
     nsyls = s->syls;
   
-  // printf("%d %s %d\n", s==NULL, str, nsyls);
+  printf("%s %d %d\n", str, nsyls, NULL==s);
   
   return SYLCOUNT_MAX(1, nsyls);
 }
