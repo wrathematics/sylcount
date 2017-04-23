@@ -1,2 +1,4 @@
 ^\.travis\.yml$
 src/.clang_complete
+
+LICENSE.md
