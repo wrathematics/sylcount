@@ -1,0 +1,7 @@
+#!/bin/sh
+
+cp hash.h_bak hash.h
+
+sed -i -e 's/{""},/{"", 0},/g' hash.h
+
+cp hash.h ~/dev/sylcount/Rpkg/src/include

@@ -1,4 +1,4 @@
-struct sylcount{char *word; int   syls;};
+struct sylcount{char *word; int syls;};
 %%
 abandoned, 3
 abase, 2

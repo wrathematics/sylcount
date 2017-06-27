@@ -1,4 +1,6 @@
 *.o
 
+cmdline/raw/hash.h_bak
+
 sylcount
 example
