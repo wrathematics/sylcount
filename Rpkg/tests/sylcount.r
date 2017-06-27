@@ -26,3 +26,13 @@ stopifnot(identical(test, truth))
 
 test = sylcount(y)[[1]]
 stopifnot(identical(test, unlist(truth)))
+
+
+
+truth <- data.frame(
+  word=c("I", "am", "the", "very", "model", "of", "a", "modern", "major", "general", "I", "have", "information", "vegetable", "animal", "and", "mineral"),
+  syllables = test,
+  stringsAsFactors=FALSE
+)
+test = sylcount(y, counts.only=FALSE)
+stopifnot(identical(truth, test[[1]]))
