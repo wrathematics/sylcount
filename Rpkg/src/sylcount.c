@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+
 #include "include/RNACI.h"
 #include "include/sylcount.h"
 
@@ -181,8 +182,8 @@ SEXP R_readability(SEXP s_)
   }
   
   
-  ret_names = make_list_names(12, "chars", "wordchars", "words", "nonwords", "sents", "sylls", "polys", "re", "gl", "ari", "smog", "cl");
-  ret = make_dataframe(RNULL, ret_names, 12, chars, wordchars, words, nw, sents, sylls, polys, re, gl, ari, smog, cl);
+  make_list_names(ret_names, 12, "chars", "wordchars", "words", "nonwords", "sents", "sylls", "polys", "re", "gl", "ari", "smog", "cl");
+  make_dataframe(ret, RNULL, ret_names, 12, chars, wordchars, words, nw, sents, sylls, polys, re, gl, ari, smog, cl);
   
   R_END;
   return ret;
@@ -234,8 +235,8 @@ static SEXP R_sylcount_countsAndWords(SEXP s_)
     
     newRvec(word, nwords, "str");
     newRvec(sylls, nwords, "int");
-    localdf_names = make_list_names(2, "word", "syllables");
-    localdf = make_dataframe(RNULL, localdf_names, 2, word, sylls);
+    make_list_names(localdf_names, 2, "word", "syllables");
+    make_dataframe(localdf, RNULL, localdf_names, 2, word, sylls);
     SET_VECTOR_ELT(ret, i, localdf);
     
     int start = 0;
@@ -450,8 +451,8 @@ SEXP R_corpus_summary(SEXP s_)
     }
   }
   
-  ret_names = make_list_names(7, "chars", "wordchars", "words", "nonwords", "sents", "sylls", "polys");
-  ret = make_dataframe(RNULL, ret_names, 7, chars, wordchars, words, nw, sents, sylls, polys);
+  make_list_names(ret_names, 7, "chars", "wordchars", "words", "nonwords", "sents", "sylls", "polys");
+  make_dataframe(ret, RNULL, ret_names, 7, chars, wordchars, words, nw, sents, sylls, polys);
   
   R_END;
   return ret;
