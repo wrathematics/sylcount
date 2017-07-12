@@ -1,6 +1,10 @@
 #' sylcount
 #' 
+#' @description
 #' A vectorized syllable counter for English language text.
+#' 
+#' Because of the R memory allocations required, the operation is not thread
+#' safe.  It is evaluated in serial. 
 #' 
 #' @details
 #' The maximum supported word length is 64 characters. For any token having more

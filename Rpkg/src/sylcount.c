@@ -61,14 +61,17 @@ static inline double cl_score(const uint32_t tot_chars, const uint32_t tot_words
 
 
 
-SEXP R_readability(SEXP s_)
+SEXP R_readability(SEXP s_, SEXP nthreads_)
 {
   SEXP ret, ret_names;
   SEXP chars, wordchars, words, nw, sents, sylls, polys;
   SEXP ari, re, gl, smog, cl;
-  const int len = LENGTH(s_);
   
   CHECK_IS_STRINGS(s_);
+  CHECK_IS_POSINT(nthreads_, "nthreads");
+  
+  const int len = LENGTH(s_);
+  const int nthreads = asInteger(nthreads_);
   
   newRvec(chars, len, "int");
   newRvec(wordchars, len, "int");
@@ -84,7 +87,7 @@ SEXP R_readability(SEXP s_)
   newRvec(cl, len, "dbl");
   
   
-  #pragma omp parallel
+  #pragma omp parallel num_threads(nthreads)
   {
     char buf[BUFLEN];
     
@@ -208,7 +211,7 @@ static SEXP R_sylcount_countsAndWords(SEXP s_)
   {
     SEXP localdf, localdf_names;
     SEXP word, sylls;
-    const char*const s = CHARPT(s_, i);
+    const char *const s = CHARPT(s_, i);
     const int slen = strlen(s);
     
     int nwords = count_words(slen, s);
@@ -342,13 +345,16 @@ SEXP R_sylcount(SEXP s, SEXP counts_only)
 // Basic text document count summaries
 // -------------------------------------------------------
 
-SEXP R_corpus_summary(SEXP s_)
+SEXP R_corpus_summary(SEXP s_, SEXP nthreads_)
 {
   SEXP ret, ret_names;
   SEXP chars, wordchars, words, nw, sents, sylls, polys;
-  const int len = LENGTH(s_);
   
   CHECK_IS_STRINGS(s_);
+  CHECK_IS_POSINT(nthreads_, "nthreads");
+  
+  const int len = LENGTH(s_);
+  const int nthreads = asInteger(nthreads_);
   
   newRvec(chars, len, "int");
   newRvec(wordchars, len, "int");
@@ -359,7 +365,7 @@ SEXP R_corpus_summary(SEXP s_)
   newRvec(polys, len, "int");
   
   
-  #pragma omp parallel
+  #pragma omp parallel num_threads(nthreads)
   {
     char buf[BUFLEN];
     

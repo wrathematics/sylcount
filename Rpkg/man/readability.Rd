@@ -4,10 +4,13 @@
 \alias{readability}
 \title{readability}
 \usage{
-readability(s)
+readability(s, nthreads = sylcount.nthreads())
 }
 \arguments{
 \item{s}{A character vector (vector of strings).}
+
+\item{nthreads}{Number of threads to use. By default it will use the total number of
+cores + hyperthreads.}
 }
 \value{
 A dataframe containing:
@@ -29,7 +32,9 @@ A dataframe containing:
 \description{
 Computes some basic "readability" measurements, includeing Flesch Reading
 Ease, Flesch-Kincaid grade level, Automatic Readability Index, and the
-Simple Measure of Gobbledygook.  The function is vectorized.
+Simple Measure of Gobbledygook.  The function is vectorized by document, and
+scores are computed in parallel via OpenMP.  You can control the number of
+threads used with the \code{nthreads} parameter.
 
 The function will have some difficulty on poorly processed and cleaned data.
 For example, if all punctuation is stripped out, then the number of sentences
@@ -52,11 +57,13 @@ library(sylcount)
 a <- "I am the very model of a modern major general."
 b <- "I have information vegetable, animal, and mineral."
 
+# One or the other
 readability(a)
+readability(b)
 
-# One at a time
+# Bot at once as separate documents.
 readability(c(a, b))
-# Both at once
+# And as a single document.
 readability(paste0(a, b, collapse=" "))
 }
 

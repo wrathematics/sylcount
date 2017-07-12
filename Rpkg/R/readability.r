@@ -3,7 +3,9 @@
 #' @description
 #' Computes some basic "readability" measurements, includeing Flesch Reading
 #' Ease, Flesch-Kincaid grade level, Automatic Readability Index, and the
-#' Simple Measure of Gobbledygook.  The function is vectorized.
+#' Simple Measure of Gobbledygook.  The function is vectorized by document, and
+#' scores are computed in parallel via OpenMP.  You can control the number of
+#' threads used with the \code{nthreads} parameter.
 #' 
 #' The function will have some difficulty on poorly processed and cleaned data.
 #' For example, if all punctuation is stripped out, then the number of sentences
@@ -39,6 +41,9 @@
 #' 
 #' @param s
 #' A character vector (vector of strings).
+#' @param nthreads
+#' Number of threads to use. By default it will use the total number of
+#' cores + hyperthreads.
 #' 
 #' @references
 #' Kincaid, J. Peter, et al. Derivation of new readability formulas (automated
@@ -61,14 +66,16 @@
 #' a <- "I am the very model of a modern major general."
 #' b <- "I have information vegetable, animal, and mineral."
 #' 
+#' # One or the other
 #' readability(a)
+#' readability(b)
 #' 
-#' # One at a time
+#' # Bot at once as separate documents.
 #' readability(c(a, b))
-#' # Both at once
+#' # And as a single document.
 #' readability(paste0(a, b, collapse=" "))
 #' }
 #' 
 #' @seealso \code{\link{doc_counts}}
 #' @export
-readability <- function(s) .Call(R_readability, s)
+readability <- function(s, nthreads=sylcount.nthreads()) .Call(R_readability, s, nthreads)

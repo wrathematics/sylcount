@@ -4,10 +4,13 @@
 \alias{doc_counts}
 \title{doc_counts}
 \usage{
-doc_counts(s)
+doc_counts(s, nthreads = sylcount.nthreads())
 }
 \arguments{
 \item{s}{A character vector (vector of strings).}
+
+\item{nthreads}{Number of threads to use. By default it will use the total number of
+cores + hyperthreads.}
 }
 \value{
 A dataframe containing:
@@ -22,7 +25,12 @@ A dataframe containing:
 }
 }
 \description{
-doc_counts
+Computes some basic document counts (see the 'Value' section below for
+details).
+
+The function is vectorized by document, and scores are computed in parallel
+via OpenMP.  You can control the number of threads used with the
+\code{nthreads} parameter.
 }
 \details{
 The function is essentially just \code{readability()} without the readability
