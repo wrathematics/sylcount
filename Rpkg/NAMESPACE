@@ -3,6 +3,8 @@
 export(doc_counts)
 export(readability)
 export(sylcount)
+export(sylcount.nthreads)
 useDynLib(sylcount,R_corpus_summary)
 useDynLib(sylcount,R_readability)
 useDynLib(sylcount,R_sylcount)
+useDynLib(sylcount,R_sylcount_nthreads)
