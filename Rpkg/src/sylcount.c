@@ -3,8 +3,9 @@
 #include <ctype.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <math.h>
 
-
+#include "include/reactor.h"
 #include "include/RNACI.h"
 #include "include/sylcount.h"
 
@@ -12,27 +13,6 @@
 #define ITER_PER_CHECK 256
 
 #define CHARPT(x,i) ((char*)CHAR(STRING_ELT(x,i)))
-#define THROW_MEMERR error("unable to allocate memory")
-#define CHECKMALLOC(s) if (s == NULL) THROW_MEMERR
-
-#define CHECK_IS_FLAG(x, argname) \
-  if (TYPEOF(x) != LGLSXP || LENGTH(x) != 1 || LOGICAL(x)[0] == NA_LOGICAL){ \
-    error("argument '%s' must be a flag", argname);}
-
-#define CHECK_IS_STRINGS(s) \
-  if(LENGTH(s) < 1 || TYPEOF(s) != STRSXP){ \
-    error("argument 's' must be a vector of strings\n");}
-
-// #include <R_ext/Utils.h>
-// static inline void check_interrupt_fun(void *ignored)
-// {
-//   R_CheckUserInterrupt();
-// }
-// 
-// static bool check_interrupt()
-// {
-//   return (R_ToplevelExec(check_interrupt_fun, NULL) == FALSE);
-// }
 
 static inline bool is_sentend(const char c)
 {
