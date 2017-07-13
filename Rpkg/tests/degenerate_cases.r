@@ -1,6 +1,6 @@
 library(sylcount)
 
-test = readability("")
+test = readability("", nthreads=1)
 truth = 
 data.frame(
   chars = 0L,
@@ -21,7 +21,7 @@ stopifnot(identical(test, truth))
 
 
 
-test = doc_counts("")
+test = doc_counts("", nthreads=1)
 truth = truth[, 1:7]
 stopifnot(identical(test, truth))
 
