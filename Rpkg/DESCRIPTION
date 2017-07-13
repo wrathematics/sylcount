@@ -1,7 +1,7 @@
 Package: sylcount
 Type: Package
 Title: Syllable Counting and Readability Measurements
-Version: 0.1-0
+Version: 0.2-0
 Description: An English language syllable counter, plus readability score
     measure-er.  The package has been carefully optimized and should be very
     efficient, both in terms of run time performance and memory consumption.
