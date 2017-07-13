@@ -61,6 +61,30 @@ static inline double cl_score(const uint32_t tot_chars, const uint32_t tot_words
 
 
 
+static inline void counts_set_degenerate(SEXP chars, SEXP wordchars, SEXP words, SEXP nw,
+  SEXP sents, SEXP sylls, SEXP polys, const int i)
+{
+  INT(chars, i) = 0;
+  INT(wordchars, i) = 0;
+  INT(words, i) = 0;
+  INT(nw, i) = 0;
+  INT(sents, i) = 0;
+  INT(sylls, i) = 0;
+  INT(polys, i) = 0;
+}
+
+static inline void scores_set_degenerate(SEXP re, SEXP gl, SEXP ari, SEXP smog,
+  SEXP cl, const int i)
+{
+  DBL(re, i) = R_NaN;
+  DBL(gl, i) = R_NaN;
+  INT(ari, i) = NA_INTEGER;
+  DBL(smog, i) = R_NaN;
+  DBL(cl, i) = R_NaN;
+}
+
+
+
 SEXP R_readability(SEXP s_, SEXP nthreads_)
 {
   SEXP ret, ret_names;
@@ -94,6 +118,20 @@ SEXP R_readability(SEXP s_, SEXP nthreads_)
     #pragma omp for
     for (int i=0; i<len; i++)
     {
+      const char *const s = CHARPT(s_, i);
+      const int slen = strlen(s);
+      
+      int j = 0;
+      while (j < slen && s[j] == ' ')
+        j++;
+      
+      if (slen == 0 || j == slen)
+      {
+        counts_set_degenerate(chars, wordchars, words, nw, sents, sylls, polys, i);
+        scores_set_degenerate(re, gl, ari, smog, cl, i);
+        continue;
+      }
+      
       uint32_t tot_wordchars = 0;
       uint32_t tot_words = 0;
       uint32_t tot_nonwords = 0;
@@ -101,13 +139,10 @@ SEXP R_readability(SEXP s_, SEXP nthreads_)
       uint32_t tot_sylls = 0;
       uint32_t tot_polys = 0;
       
-      const char *const s = CHARPT(s_, i);
-      const int slen = strlen(s);
-      
       int start = 0;
       int end;
       
-      for (int j=0; j<=slen && slen>0; j++)
+      for (; j<=slen && slen>0; j++)
       {
         if (isalnum(s[j]))
           tot_wordchars++;
@@ -372,6 +407,19 @@ SEXP R_corpus_summary(SEXP s_, SEXP nthreads_)
     #pragma omp for
     for (int i=0; i<len; i++)
     {
+      const char *const s = CHARPT(s_, i);
+      const int slen = strlen(s);
+      
+      int j = 0;
+      while (j < slen && s[j] == ' ')
+        j++;
+      
+      if (slen == 0 || j == slen)
+      {
+        counts_set_degenerate(chars, wordchars, words, nw, sents, sylls, polys, i);
+        continue;
+      }
+      
       uint32_t tot_wordchars = 0;
       uint32_t tot_words = 0;
       uint32_t tot_nonwords = 0;
@@ -379,13 +427,10 @@ SEXP R_corpus_summary(SEXP s_, SEXP nthreads_)
       uint32_t tot_sylls = 0;
       uint32_t tot_polys = 0;
       
-      const char *const s = CHARPT(s_, i);
-      const int slen = strlen(s);
-      
       int start = 0;
       int end;
       
-      for (int j=0; j<=slen && slen>0; j++)
+      for (; j<=slen && slen>0; j++)
       {
         if (isalnum(s[j]))
           tot_wordchars++;
@@ -399,7 +444,7 @@ SEXP R_corpus_summary(SEXP s_, SEXP nthreads_)
             j++;
           
           end = j;
-          if (end-start > BUFLEN)
+          if (end-start+1 > BUFLEN)
           {
             tot_nonwords++;
             continue;
