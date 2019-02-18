@@ -1,6 +1,7 @@
 *.so
 *.o
 
+src/Makevars
+
 *~
 *.swp
-
