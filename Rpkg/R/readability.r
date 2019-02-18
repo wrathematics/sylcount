@@ -61,21 +61,20 @@
 #' machine scoring." Journal of Applied Psychology 60.2 (1975): 283.
 #' 
 #' @examples
-#' \dontrun{
 #' library(sylcount)
 #' a <- "I am the very model of a modern major general."
 #' b <- "I have information vegetable, animal, and mineral."
 #' 
 #' # One or the other
-#' readability(a)
-#' readability(b)
+#' readability(a, nthreads=1)
+#' readability(b, nthreads=1)
 #' 
 #' # Bot at once as separate documents.
-#' readability(c(a, b))
+#' readability(c(a, b), nthreads=1)
 #' # And as a single document.
-#' readability(paste0(a, b, collapse=" "))
-#' }
+#' readability(paste0(a, b, collapse=" "), nthreads=1)
 #' 
+#' @useDynLib sylcount R_readability
 #' @seealso \code{\link{doc_counts}}
 #' @export
 readability <- function(s, nthreads=sylcount.nthreads()) .Call(R_readability, s, nthreads)

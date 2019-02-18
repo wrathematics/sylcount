@@ -6,6 +6,7 @@
 #' @return
 #' An integer; the number of threads.
 #' 
+#' @useDynLib sylcount R_sylcount_nthreads
 #' @export
 sylcount.nthreads <- function()
 {

@@ -30,15 +30,14 @@
 #' A list of dataframes.
 #' 
 #' @examples
-#' \dontrun{
 #' library(sylcount)
 #' a <- "I am the very model of a modern major general."
 #' b <- "I have information vegetable, animal, and mineral."
 #' 
 #' sylcount(c(a, b))
 #' sylcount(c(a, b), counts.only=FALSE)
-#' }
 #' 
+#' @useDynLib sylcount R_sylcount
 #' @seealso \code{\link{readability}}
 #' @export
 sylcount <- function(s, counts.only=TRUE) .Call(R_sylcount, s, counts.only)
