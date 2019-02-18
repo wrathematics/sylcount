@@ -1,3 +1,29 @@
+/*  Copyright (c) 2017 Drew Schmidt
+    All rights reserved.
+    
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+    
+    1. Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+    
+    2. Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+    
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+    "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+    TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
@@ -25,9 +51,9 @@ static inline bool is_wordend(const char c)
 }
 
 
-// -------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Various "readability" score-ers
-// -------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 // Flesch reading ease
 static inline double re_score(const uint32_t tot_words, const uint32_t tot_sents, const uint32_t tot_sylls)
@@ -203,16 +229,16 @@ SEXP R_readability(SEXP s_, SEXP nthreads_)
   make_list_names(ret_names, 12, "chars", "wordchars", "words", "nonwords", "sents", "sylls", "polys", "re", "gl", "ari", "smog", "cl");
   make_dataframe(ret, RNULL, ret_names, 12, chars, wordchars, words, nw, sents, sylls, polys, re, gl, ari, smog, cl);
   
-  R_END;
+  unhideGC();
   return ret;
 }
 
 
 
-// -------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Syllable counter
 // can not be put into separate file because gperf data isn't guarded correctly
-// -------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 static inline int count_words(const int len, const char*const restrict buf)
 {
@@ -240,7 +266,7 @@ static SEXP R_sylcount_countsAndWords(SEXP s_)
   SEXP ret;
   
   const int len = LENGTH(s_);
-  newRlist(ret, len);
+  PROTECT(ret = allocVector(VECSXP, len));
   
   for (int i=0; i<len; i++)
   {
@@ -284,7 +310,7 @@ static SEXP R_sylcount_countsAndWords(SEXP s_)
       }
     }
     
-    UNPROTECT(5);
+    unhideGC();
   }
   
   
@@ -303,7 +329,7 @@ static SEXP R_sylcount_countsOnly(SEXP s_)
   char buf[BUFLEN];
   
   const int len = LENGTH(s_);
-  newRlist(ret, len);
+  PROTECT(ret = allocVector(VECSXP, len));
   
   for (int i=0; i<len; i++)
   {
@@ -352,7 +378,7 @@ static SEXP R_sylcount_countsOnly(SEXP s_)
       }
     }
     
-    UNPROTECT(1);
+    unhideGC();
   }
   
   
@@ -376,9 +402,9 @@ SEXP R_sylcount(SEXP s, SEXP counts_only)
 
 
 
-// -------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Basic text document count summaries
-// -------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 SEXP R_corpus_summary(SEXP s_, SEXP nthreads_)
 {
@@ -485,6 +511,6 @@ SEXP R_corpus_summary(SEXP s_, SEXP nthreads_)
   make_list_names(ret_names, 7, "chars", "wordchars", "words", "nonwords", "sents", "sylls", "polys");
   make_dataframe(ret, RNULL, ret_names, 7, chars, wordchars, words, nw, sents, sylls, polys);
   
-  R_END;
+  unhideGC();
   return ret;
 }
