@@ -284,7 +284,7 @@ static SEXP R_sylcount_countsAndWords(SEXP s_)
       }
     }
     
-    UNPROTECT(5);
+    UNPROTECT(4);
   }
   
   
