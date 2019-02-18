@@ -110,12 +110,15 @@ SEXP R_readability(SEXP s_, SEXP nthreads_)
   newRvec(smog, len, "dbl");
   newRvec(cl, len, "dbl");
   
-  
+  #ifdef _OPENMP
   #pragma omp parallel num_threads(nthreads)
+  #endif
   {
     char buf[BUFLEN];
     
+    #ifdef _OPENMP
     #pragma omp for
+    #endif
     for (int i=0; i<len; i++)
     {
       const char *const s = CHARPT(s_, i);
@@ -399,12 +402,15 @@ SEXP R_corpus_summary(SEXP s_, SEXP nthreads_)
   newRvec(sylls, len, "int");
   newRvec(polys, len, "int");
   
-  
+  #ifdef _OPENMP
   #pragma omp parallel num_threads(nthreads)
+  #endif
   {
     char buf[BUFLEN];
     
+    #ifdef _OPENMP
     #pragma omp for
+    #endif
     for (int i=0; i<len; i++)
     {
       const char *const s = CHARPT(s_, i);
