@@ -1,8 +1,5 @@
+#include "include/common.h"
 #include "include/RNACI.h"
-
-
-#define MIN(a,b) ((a)<(b) ? (a) : (b))
-
 
 #ifdef _OPENMP
 #include <omp.h>
@@ -20,7 +17,7 @@ static inline int num_threads()
     tl = omp_get_thread_limit();
   }
   
-  n = MIN(nth, tl);
+  n = SYLCOUNT_MIN(nth, tl);
 #else
   n = 1;
 #endif

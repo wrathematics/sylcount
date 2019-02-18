@@ -5,12 +5,11 @@
 #include <ctype.h>
 #include <stdbool.h>
 #include <string.h>
+
+#include "common.h"
 #include "hash.h"
 
 typedef struct sylcount sylcount_t;
-
-#define SYLCOUNT_MAX(a,b) ((a)<(b)?(b):(a))
-
 
 static inline bool isvowel(const char c)
 {
