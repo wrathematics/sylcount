@@ -1,9 +1,11 @@
 Release 0.2-0:
   * Fixed solaris error.
   * Fixed rchk warnings.
-  * Fixed hash table warning nightmare on very recent gcc versions.
+  * Fixed hash table warnings on very recent gcc versions.
   * API change: doc_counts() and readability() now accept nthreads argument.
   * Added function sylcount.nthreads().
+  * Configure test for OpenMP.
+  * Added header guards for OpenMP pragmas.
 
 Release 0.1-0:
   * Added readability().
