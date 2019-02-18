@@ -77,4 +77,7 @@
 #' @useDynLib sylcount R_readability
 #' @seealso \code{\link{doc_counts}}
 #' @export
-readability <- function(s, nthreads=sylcount.nthreads()) .Call(R_readability, s, nthreads)
+readability <- function(s, nthreads=sylcount.nthreads())
+{
+  .Call(R_readability, s, nthreads)
+}

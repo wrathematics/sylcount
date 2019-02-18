@@ -40,4 +40,7 @@
 #' @useDynLib sylcount R_corpus_summary
 #' @seealso \code{\link{readability}}
 #' @export
-doc_counts <- function(s, nthreads=sylcount.nthreads()) .Call(R_corpus_summary, s, nthreads)
+doc_counts <- function(s, nthreads=sylcount.nthreads())
+{
+  .Call(R_corpus_summary, s, nthreads)
+}

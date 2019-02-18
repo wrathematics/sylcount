@@ -40,4 +40,7 @@
 #' @useDynLib sylcount R_sylcount
 #' @seealso \code{\link{readability}}
 #' @export
-sylcount <- function(s, counts.only=TRUE) .Call(R_sylcount, s, counts.only)
+sylcount <- function(s, counts.only=TRUE)
+{
+  .Call(R_sylcount, s, counts.only)
+}
