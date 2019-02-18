@@ -52,20 +52,18 @@ division is made in an attempt to improve run-time and memory performance.
 For implementation details, see the Details section of \code{?sylcount}.
 }
 \examples{
-\dontrun{
 library(sylcount)
 a <- "I am the very model of a modern major general."
 b <- "I have information vegetable, animal, and mineral."
 
 # One or the other
-readability(a)
-readability(b)
+readability(a, nthreads=1)
+readability(b, nthreads=1)
 
 # Bot at once as separate documents.
-readability(c(a, b))
+readability(c(a, b), nthreads=1)
 # And as a single document.
-readability(paste0(a, b, collapse=" "))
-}
+readability(paste0(a, b, collapse=" "), nthreads=1)
 
 }
 \references{

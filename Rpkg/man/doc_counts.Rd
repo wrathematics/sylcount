@@ -37,13 +37,11 @@ The function is essentially just \code{readability()} without the readability
 scores.
 }
 \examples{
-\dontrun{
 library(sylcount)
 a <- "I am the very model of a modern major general."
 b <- "I have information vegetable, animal, and mineral."
 
-doc_counts(c(a, b))
-}
+doc_counts(c(a, b), nthreads=1)
 
 }
 \seealso{
