@@ -95,7 +95,7 @@ SEXP R_readability(SEXP s_, SEXP nthreads_)
   CHECK_IS_POSINT(nthreads_, "nthreads");
   
   const int len = LENGTH(s_);
-  const int nthreads = asInteger(nthreads_);
+  int nthreads = asInteger(nthreads_);
   
   newRvec(chars, len, "int");
   newRvec(wordchars, len, "int");
@@ -392,7 +392,7 @@ SEXP R_corpus_summary(SEXP s_, SEXP nthreads_)
   CHECK_IS_POSINT(nthreads_, "nthreads");
   
   const int len = LENGTH(s_);
-  const int nthreads = asInteger(nthreads_);
+  int nthreads = asInteger(nthreads_);
   
   newRvec(chars, len, "int");
   newRvec(wordchars, len, "int");
