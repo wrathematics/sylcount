@@ -13,18 +13,15 @@ A simple English language syllable counter, plus readability score measure-er.  
 
 ## Installation
 
-You can install the stable version from CRAN using the usual `install.packages()`:
+The stable version is available on CRAN:
 
 ```r
 install.packages("sylcount")
 ```
 
-The development version is maintained on GitHub, and can easily be installed by any of the packages that offer installations from GitHub:
+The development version is maintained on GitHub:
 
 ```r
-### Pick your preference
-devtools::install_github("wrathematics/sylcount", subdir="Rpkg")
-ghit::install_github("wrathematics/sylcount", subdir="Rpkg")
 remotes::install_github("wrathematics/sylcount", subdir="Rpkg")
 ```
 
