@@ -1,3 +1,6 @@
+Release 0.2-1:
+  * Fix Solaris OMP issue.
+
 Release 0.2-0:
   * Fixed solaris error.
   * Fixed rchk warnings.
