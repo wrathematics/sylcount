@@ -3,10 +3,18 @@ Type: Package
 Title: Syllable Counting and Readability Measurements
 Version: 0.2-1
 Description: An English language syllable counter, plus readability score
-    measure-er.  The package has been carefully optimized and should be very
-    efficient, both in terms of run time performance and memory consumption.
-    The main methods are 'vectorized' by document, and scores for multiple
-    documents are computed in parallel via 'OpenMP'.
+    measure-er. For readability, we support 'Flesch' Reading Ease and
+    'Flesch-Kincaid' Grade Level ('Kincaid' 'et al'. 1975)
+    <https://stars.library.ucf.edu/cgi/viewcontent.cgi?article=1055&context=istlibrary>,
+    Automated Readability Index ('Senter' and Smith 1967)
+    <http://www.dtic.mil/cgi-bin/GetTRDoc?AD=AD0667273>,
+    Simple Measure of Gobbledygook (McLaughlin 1969)
+    <https://www.semanticscholar.org/paper/SMOG-Grading-A-New-Readability-Formula.-Laughlin/5fccb74c14769762b3de010c5e8a1a7ce700d17a>,
+    and 'Coleman-Liau' (Coleman and 'Liau' 1975) <doi:10.1037/h0076540>. The
+    package has been carefully optimized and should be very efficient, both in
+    terms of run time performance and memory consumption. The main methods are
+    'vectorized' by document, and scores for multiple documents are computed in
+    parallel via 'OpenMP'.
 License: BSD 2-clause License + file LICENSE
 Depends:
     R (>= 3.0.0)

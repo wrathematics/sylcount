@@ -53,7 +53,7 @@ static inline double smog_score(const uint32_t tot_polys, const uint32_t tot_sen
   return 1.043 * sqrt(30.0 * ((double) tot_polys/tot_sents)) + 3.1291;
 }
 
-// Coleman-Lau
+// Coleman-Liau
 static inline double cl_score(const uint32_t tot_chars, const uint32_t tot_words, const uint32_t tot_sents)
 {
   return 0.0588 * ((double) 100.0 * tot_chars/tot_words) - 0.296 * ((double) 100.0 * tot_sents/tot_words) - 15.8;
