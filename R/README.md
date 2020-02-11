@@ -1,10 +1,9 @@
 # sylcount
 
-* **Version:** 0.2-1
-* **URL**: https://github.com/wrathematics/sylcount/
+* **Version:** 0.2-2
 * **License:** [BSD 2-Clause](http://opensource.org/licenses/BSD-2-Clause)
-* **Author:** Drew Schmidt
-
+* **Project home**: https://github.com/wrathematics/sylcount
+* **Bug reports**: https://github.com/wrathematics/sylcount/issues
 
 
 A simple English language syllable counter, plus readability score measure-er.  The package has been optimized to be very efficient, both in terms of run time performance and memory consumption.  The main methods `sylcount()` and `readability()` are both vectorized by document.  Scores for multiple documents are computed in parallel.

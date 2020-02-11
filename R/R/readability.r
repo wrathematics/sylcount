@@ -54,7 +54,7 @@
 #' Senter, R. J., and Edgar A. Smith. Automated readability index. CINCINNATI
 #' UNIV OH, 1967.
 #' 
-#' Mc Laughlin, G. Harry. "SMOG grading-a new readability formula." Journal of
+#' McLaughlin, G. Harry. "SMOG grading-a new readability formula." Journal of
 #' reading 12.8 (1969): 639-646.
 #' 
 #' Coleman, Meri, and Ta Lin Liau. "A computer readability formula designed for
