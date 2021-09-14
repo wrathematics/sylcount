@@ -1,9 +1,10 @@
-#include "include/common.h"
-#include "include/RNACI.h"
-
 #ifdef _OPENMP
 #include <omp.h>
 #endif
+
+#include "include/common.h"
+#include "include/RNACI.h"
+
 
 static inline int num_threads()
 {
