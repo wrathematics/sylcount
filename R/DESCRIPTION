@@ -18,7 +18,6 @@ Description: An English language syllable counter, plus readability score
 License: BSD 2-clause License + file LICENSE
 Depends:
     R (>= 3.0.0)
-LazyData: yes
 LazyLoad: yes
 NeedsCompilation: yes
 ByteCompile: yes
