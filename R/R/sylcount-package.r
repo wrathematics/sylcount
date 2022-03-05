@@ -11,6 +11,6 @@
 #' 
 #' @name sylcount-package
 #' @docType package
-#' @author Drew Schmidt \email{wrathematics AT gmail.com}
+#' @author Drew Schmidt
 #' @keywords Package
 NULL

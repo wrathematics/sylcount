@@ -37,10 +37,11 @@
 #' sylcount(c(a, b))
 #' sylcount(c(a, b), counts.only=FALSE)
 #' 
-#' @useDynLib sylcount R_sylcount
 #' @seealso \code{\link{readability}}
+#' 
+#' @useDynLib sylcount R_sylcount
 #' @export
-sylcount <- function(s, counts.only=TRUE)
+sylcount = function(s, counts.only=TRUE)
 {
   .Call(R_sylcount, s, counts.only)
 }

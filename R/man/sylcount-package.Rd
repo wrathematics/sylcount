@@ -15,6 +15,6 @@ main methods are vectorized by document, and scores for multiple documents
 are computed in parallel via OpenMP.
 }
 \author{
-Drew Schmidt \email{wrathematics AT gmail.com}
+Drew Schmidt
 }
 \keyword{Package}

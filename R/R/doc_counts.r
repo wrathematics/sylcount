@@ -37,10 +37,11 @@
 #' 
 #' doc_counts(c(a, b), nthreads=1)
 #' 
-#' @useDynLib sylcount R_corpus_summary
 #' @seealso \code{\link{readability}}
+#' 
+#' @useDynLib sylcount R_corpus_summary
 #' @export
-doc_counts <- function(s, nthreads=sylcount.nthreads())
+doc_counts = function(s, nthreads=sylcount.nthreads())
 {
   .Call(R_corpus_summary, s, nthreads)
 }

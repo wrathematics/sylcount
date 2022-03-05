@@ -8,7 +8,7 @@
 #' 
 #' @useDynLib sylcount R_sylcount_nthreads
 #' @export
-sylcount.nthreads <- function()
+sylcount.nthreads = function()
 {
   .Call(R_sylcount_nthreads)
 }

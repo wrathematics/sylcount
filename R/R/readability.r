@@ -74,10 +74,11 @@
 #' # And as a single document.
 #' readability(paste0(a, b, collapse=" "), nthreads=1)
 #' 
-#' @useDynLib sylcount R_readability
 #' @seealso \code{\link{doc_counts}}
+#' 
+#' @useDynLib sylcount R_readability
 #' @export
-readability <- function(s, nthreads=sylcount.nthreads())
+readability = function(s, nthreads=sylcount.nthreads())
 {
   .Call(R_readability, s, nthreads)
 }

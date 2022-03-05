@@ -1,6 +1,6 @@
 # sylcount
 
-* **Version:** 0.2-3
+* **Version:** 0.2-4
 * **License:** [BSD 2-Clause](https://opensource.org/licenses/BSD-2-Clause)
 * **Project home**: https://github.com/wrathematics/sylcount
 * **Bug reports**: https://github.com/wrathematics/sylcount/issues
@@ -21,7 +21,7 @@ install.packages("sylcount")
 The development version is maintained on GitHub:
 
 ```r
-remotes::install_github("wrathematics/sylcount", subdir="Rpkg")
+remotes::install_github("wrathematics/sylcount", subdir="R")
 ```
 
 
