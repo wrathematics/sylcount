@@ -1,7 +1,7 @@
 Package: sylcount
 Type: Package
 Title: Syllable Counting and Readability Measurements
-Version: 0.2-4
+Version: 0.2-5
 Description: An English language syllable counter, plus readability score
     measure-er. For readability, we support 'Flesch' Reading Ease and
     'Flesch-Kincaid' Grade Level ('Kincaid' 'et al'. 1975)

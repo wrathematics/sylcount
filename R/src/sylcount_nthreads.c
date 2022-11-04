@@ -6,7 +6,7 @@
 #include "include/RNACI.h"
 
 
-static inline int num_threads()
+static inline int num_threads(void)
 {
   int n = 0;
   
@@ -28,7 +28,7 @@ static inline int num_threads()
 
 
 
-SEXP R_sylcount_nthreads()
+SEXP R_sylcount_nthreads(void)
 {
   SEXP nth;
   newRvec(nth, 1, "int");

@@ -1,6 +1,6 @@
 # sylcount
 
-* **Version:** 0.2-4
+* **Version:** 0.2-5
 * **License:** [BSD 2-Clause](https://opensource.org/licenses/BSD-2-Clause)
 * **Project home**: https://github.com/wrathematics/sylcount
 * **Bug reports**: https://github.com/wrathematics/sylcount/issues

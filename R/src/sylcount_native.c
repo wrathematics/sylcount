@@ -8,7 +8,7 @@
 extern SEXP R_readability(SEXP s_, SEXP nthreads_);
 extern SEXP R_sylcount(SEXP s_, SEXP counts_only_);
 extern SEXP R_corpus_summary(SEXP s_, SEXP nthreads_);
-extern SEXP R_sylcount_nthreads();
+extern SEXP R_sylcount_nthreads(void);
 
 static const R_CallMethodDef CallEntries[] = {
   {"R_readability", (DL_FUNC) &R_readability, 2},
